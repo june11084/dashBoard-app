@@ -2,12 +2,28 @@ import axios from 'axios';
 import VueAxios from 'vue-axios';
 
 const state = {
-  count: 10,
-  allResults: ["1", "2", "3", "4"],
+  count: 0,
+  themes: [],
+  allResults: [{id:20, name: "blue" }, {id:10, name: "red"}, {id:32, name: "green"}, {id:5, name: "yellow"}],
 };
 
 const getters = {
-  allResults: state => state.allResults
+  allResults: function(state) {
+    let ret = {
+      length: state.allResults.length,
+      getItem: function(index){
+        if(state.allResults[index]){
+          return state.allResults[index].name
+        }
+        return "";
+      },
+      getObject: function(index){
+        console.log("getObject ran")
+        return state.allResults[index];
+      }
+    }
+    return ret
+  }
 }
 
 const mutations = {
@@ -17,36 +33,13 @@ const mutations = {
   increment (state) {
     state.count++;
   },
-  startLogin (state){
-    let vm = this;
-    let responseBack = "";
-    login({
-      title: "Login",
-      message: "Please enter your user ID and Password",
-      okButtonText: "Log In",
-      cancelButtonText: "Cancel",
-      userName: "Username",
-      password: "Password"
-    }).then(result => {
-      console.log("Login Ran");
-      console.log("apicall ran");
-      responseBack = `${result.userName}`
-    });
-    return axios.get(`https://api.domainsdb.info/search?query=${responseBack}`).then((response) => {
-      console.log("api responded")
-      console.log("Api call done")
-      //console.log(response)
-      for(let i = 0; i < response.data.domains.length ; i ++){
-        console.log(response.data.domains[i]);
-        console.log(state.count)
-        vm.state.count++;
-        store.commit('decrement');
-        // let resultArray = [state.allResults];
-        //state.allResults.push(`${response.data.domains[i]}`);
-        // console.log(resultArray)
-      }
-    });
-    state.count++;
+  populateResultArray (state, responseData){
+    console.log("populateResult ran")
+    for(let i = 0; i < responseData.data.domains.length ; i ++){
+      console.log(responseData.data.domains[i]);
+      console.log(state.count)
+      state.count++;
+    };
   }
 };
 
@@ -55,7 +48,18 @@ const actions = {
   decrement ({ commit }) {
     commit('decrement')
   },
-  startLogin: ({commit}) => commit('startLogin')
+  populateResultArray ({commit}, userName) {
+    console.log("1. populateResult ran")
+    console.log(userName)
+    axios.get(`https://api.domainsdb.info/search?query=${userName}`).then((response) => {
+      console.log("2. api responded")
+      console.log("3. Api call done")
+      console.log("4. api call finished")
+      console.log(response)
+      commit('populateResultArray', response)
+      console.log("populateResult finished")
+    });
+  }
 };
 
 export default {
