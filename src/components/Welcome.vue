@@ -1,6 +1,6 @@
 <template>
   <Page class="page">
-    <ActionBar class="action-bar" title="Counter">
+    <ActionBar class="action-bar" title="Welcome">
     </ActionBar>
 
     <StackLayout>
@@ -9,18 +9,12 @@
         <Label :text="message" alignSelf="baseline" class="h2"/>
         <Button @tap="login" text="+" class="btn btn-outline"/>
       </FlexboxLayout>
-      <Button text="Select Theme" @tap="selectTheme" />
       <Image v-if="surprise" src="~/images/NativeScript-Vue.png"/>
-      <ListView for="item in listOfItems" @itemTap="onItemTap">
-        <v-template>
-          <!-- Shows the list item label in the default color and stye. -->
-          <Label :text="item" />
-        </v-template>
-      </ListView>
       <ListPicker :items="listOfItems" selectedIndex="0" backgroundColor="#9AB2AC"
           @selectedIndexChange="selectedIndexChanged($event)" v-model="selectedItem">
-
-        </ListPicker>
+      </ListPicker>
+      <Label :text="getToken" alignSelf="baseline" class="h2"/>
+      <Button @tap="takePicture" text="Camera" class="btn btn-outline"/>
     </StackLayout>
 
   </Page>
@@ -31,6 +25,9 @@
   import { mapGetters } from 'vuex';
   import axios from 'axios';
   import VueAxios from 'vue-axios';
+  import Counter from './Counter';
+  import * as camera from "nativescript-camera";
+  import { Image } from "ui/image";
   export default {
     data: function () {
        return {
@@ -45,7 +42,8 @@
         return (this.$store.state.counter.count >= 5);
       },
       ...mapGetters({
-        listOfItems: 'allResults'
+        listOfItems: 'allResults',
+        getToken: 'getToken'
       })
     },
     methods: {
@@ -53,22 +51,43 @@
         'decrement',
         'increment',
         'startLogin',
-        'populateResultArray'
+        'callLoginApi'
       ]),
+      goToHelloPage() {
+        console.log("goToHelloPage ran")
+       this.$navigateTo(Counter);
+     },
+      takePicture(){
+        camera.requestPermissions();
+        camera.takePicture().
+        then((imageAsset) => {
+          console.log("Result is an image asset instance");
+          var image = new Image();
+          image.src = imageAsset;
+        }).catch((err) => {
+          console.log("Error -> " + err.message);
+        });
+     },
       login(){
         login({
          title: "Login",
          message: "Please enter your user ID and Password",
          okButtonText: "Log In",
          cancelButtonText: "Cancel",
-         userName: "Username",
-         password: "Password"
+         userName: "djones@hotmail.com",
+         password: "Dj0nes@th",
        }).then(result => {
-         console.log("Login Ran");
-         let userName = `${result.userName}`
-         console.log(userName)
-         this.populateResultArray(userName);
-         console.log("5. action ran")
+         if(result.result===true){
+           console.log("Login Ran");
+           let userName = `${result.userName}`
+           let password = `${result.password}`
+           console.log(userName+" "+password)
+           this.callLoginApi(userName, password).then((result)=>{
+             console.log("callLoginApi .then ran")
+             this.goToHelloPage();
+             console.log("done goToHelloPage")
+           })
+         };
        });
      },
      selectedIndexChanged(args){

@@ -12,6 +12,7 @@ const getters = {
     let ret = {
       length: state.allResults.length,
       getItem: function(index){
+        console.log("getItem ran")
         if(state.allResults[index]){
           return state.allResults[index].name
         }
@@ -22,6 +23,7 @@ const getters = {
         return state.allResults[index];
       }
     }
+    console.log(ret)
     return ret
   }
 }
@@ -51,7 +53,10 @@ const actions = {
   populateResultArray ({commit}, userName) {
     console.log("1. populateResult ran")
     console.log(userName)
-    axios.get(`https://api.domainsdb.info/search?query=${userName}`).then((response) => {
+    axios({
+      method: 'get',
+      url: `https://api.domainsdb.info/search?query=${userName}`
+    }).then((response) => {
       console.log("2. api responded")
       console.log("3. Api call done")
       console.log("4. api call finished")

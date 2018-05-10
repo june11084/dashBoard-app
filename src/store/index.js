@@ -1,14 +1,17 @@
 import Vue from 'nativescript-vue';
 import Vuex from 'vuex';
-import counter from './modules/counter';
 import axios from 'axios'
 import VueAxios from 'vue-axios'
-Vue.use(Vuex, VueAxios, axios);
+import counter from './modules/counter';
+import service from './modules/service';
+import camera from "nativescript-camera";
+Vue.use(Vuex, VueAxios, axios, camera);
 const debug = process.env.NODE_ENV !== 'production';
 
 const store = new Vuex.Store({
   modules: {
     counter,
+    service,
   },
   strict: debug,
 });

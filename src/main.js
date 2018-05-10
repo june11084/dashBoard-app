@@ -2,7 +2,11 @@ import Vue from 'nativescript-vue';
 
 import Counter from './components/Counter';
 
+import Welcome from './components/Welcome';
+
 import store from './store';
+
+
 
 import './styles.scss';
 
@@ -11,7 +15,7 @@ import './styles.scss';
 
 new Vue({
 
-  render: h => h(Counter),
+  render: h => h(Welcome),
 
   store,
 
