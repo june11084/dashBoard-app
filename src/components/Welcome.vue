@@ -7,7 +7,7 @@
       <FlexboxLayout flexDirection="row" justifyContent="center">
         <Button @tap="decrement" text="-" class="btn btn-outline"/>
         <Label :text="message" alignSelf="baseline" class="h2"/>
-        <Button @tap="login" text="+" class="btn btn-outline"/>
+        <Button @tap="login()" text="+" class="btn btn-outline"/>
       </FlexboxLayout>
       <Image v-if="surprise" src="~/images/NativeScript-Vue.png"/>
       <ListPicker :items="listOfItems" selectedIndex="0" backgroundColor="#9AB2AC"
@@ -15,6 +15,7 @@
       </ListPicker>
       <Label :text="getStoredToken" alignSelf="baseline" class="h2"/>
       <Button @tap="takePicture" text="Camera" class="btn btn-outline"/>
+      <Button @tap="login()" text="Login" class="btn btn-outline" :visibility="loggedIn"/>
     </StackLayout>
 
   </Page>
@@ -32,9 +33,10 @@
   import * as appSettings from 'application-settings';
   export default {
     data: function () {
-       return {
-         selectedItem: ""
-       }
+      return {
+        selectedItem: "",
+        loggedIn: " "
+      }
     },
     computed: {
       message () {
@@ -50,10 +52,12 @@
         if (documentId==="null"){
           console.log("documentId is undefined")
           console.log(this.$store.state.service.apiToken)
+          this.loggedIn = "visible";
           return this.$store.state.service.apiToken;
         } else {
           let person = db.getDocument(documentId);
           console.log("documentId is defined")
+          this.loggedIn = "collapse";
           return "Token: " + person.token;
         };
       },
@@ -66,7 +70,8 @@
       ...mapActions([
         'decrement',
         'increment',
-        'callLoginApi'
+        'callLoginApi',
+        'takePicture'
       ]),
       goToHelloPage() {
         console.log("goToHelloPage ran")
@@ -96,34 +101,15 @@
         console.log(documentId)
         console.log(person.firstname)
       },
-      login2(){
-        console.log("login2 started")
-        this.login();
-         login({
-         title: "Login",
-         message: "Please enter your user ID and Password",
-         okButtonText: "Log In",
-         cancelButtonText: "Cancel",
-         userName: "djones@hotmail.com",
-         password: "Dj0nes@th",
-        }).then(result => {
-         if(result.result===true){
-           console.log("Login Ran");
-           let userName = `${result.userName}`
-           let password = `${result.password}`
-           console.log(userName+" "+password)
-         };
-        })
-        console.log("login2 finished")
-      },
       login(){
+        console.log("login ran")
         login({
-         title: "Login",
-         message: "Please enter your user ID and Password",
-         okButtonText: "Log In",
-         cancelButtonText: "Cancel",
-         userName: "djones@hotmail.com",
-         password: "Dj0nes@th",
+          title: "Login",
+          message: "Please enter your user ID and Password",
+          okButtonText: "Log In",
+          cancelButtonText: "Cancel",
+          userName: "djones@hotmail.com",
+          password: "Dj0nes@th",
        }).then(result => {
          if(result.result===true){
            console.log("Login Ran");
@@ -133,7 +119,8 @@
            this.callLoginApi(userName, password).then((result)=>{
              this.createDB(userName, password, this.getToken);
              console.log(this.getToken)
-             this.goToHelloPage()
+             this.loggedIn = "collapse";
+             //this.goToHelloPage()
            })
           };
        }).catch((err) => {
@@ -150,10 +137,8 @@
        console.log("picker selection: " + this.selectedItem);
       }
     },
-    mounted(){
-      this.login2();
-      this.increment();
-      //this.takePicture();
+    created(){
+
     }
   }
 </script>

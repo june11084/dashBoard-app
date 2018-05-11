@@ -1,5 +1,6 @@
 import axios from 'axios';
 import * as appSettings from 'application-settings';
+import * as camera from "nativescript-camera";
 const state = {
   apiToken: "Not Obtained",
   allResults: [{id:20, name: "blue" }, {id:10, name: "red"}, {id:32, name: "green"}, {id:5, name: "yellow"}],
@@ -7,7 +8,7 @@ const state = {
 
 const getters = {
   getToken: state => {
-  return state.apiToken;
+    return state.apiToken;
   }
 }
 
@@ -39,7 +40,6 @@ const actions = {
         //appSettings.setString("documentId", documentId);
       }).catch(function (error) {
         if (error.response) {
-
            console.log(error.response.data);
            console.log(error.response.status);
            console.log(error.response.headers);

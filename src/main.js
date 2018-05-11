@@ -4,6 +4,8 @@ import Counter from './components/Counter';
 
 import Welcome from './components/Welcome';
 
+import Home from './components/Home';
+
 import store from './store';
 
 
@@ -15,7 +17,7 @@ import './styles.scss';
 
 new Vue({
 
-  render: h => h(Welcome),
+  render: h => h(Home),
 
   store,
 

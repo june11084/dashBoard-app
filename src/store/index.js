@@ -5,7 +5,9 @@ import VueAxios from 'vue-axios'
 import counter from './modules/counter';
 import service from './modules/service';
 import camera from "nativescript-camera";
-Vue.use(Vuex, VueAxios, axios, camera);
+import RadSideDrawer from "nativescript-ui-sidedrawer";
+Vue.registerElement('RadSideDrawer', () => require('nativescript-ui-sidedrawer').RadSideDrawer)
+Vue.use(Vuex, VueAxios, axios, camera, RadSideDrawer);
 const debug = process.env.NODE_ENV !== 'production';
 
 const store = new Vuex.Store({
