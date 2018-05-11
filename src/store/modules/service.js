@@ -1,6 +1,7 @@
 import axios from 'axios';
+import * as appSettings from 'application-settings';
 const state = {
-  apiToken: "asdf",
+  apiToken: "Not Obtained",
   allResults: [{id:20, name: "blue" }, {id:10, name: "red"}, {id:32, name: "green"}, {id:5, name: "yellow"}],
 };
 
@@ -34,21 +35,17 @@ const actions = {
         console.log("header: " + Object.values(response.request._options.headers))
         let token = response.data.remember_token;
         commit('setToken', token)
-        console.log("callLoginApi finished ")
+        console.log("callLoginApi finish ")
+        //appSettings.setString("documentId", documentId);
       }).catch(function (error) {
         if (error.response) {
-           // The request was made and the server responded with a status code
-           // that falls out of the range of 2xx
+
            console.log(error.response.data);
            console.log(error.response.status);
            console.log(error.response.headers);
          } else if (error.request) {
-           // The request was made but no response was received
-           // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-           // http.ClientRequest in node.js
            console.log(error.request);
          } else {
-           // Something happened in setting up the request that triggered an Error
            console.log('Error', error.message);
          }
          console.log(error.config);
