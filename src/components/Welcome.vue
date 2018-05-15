@@ -1,5 +1,5 @@
 <template>
-  <Page class="page">
+  <Page class="page" :visibility="loggedIn">
     <ActionBar class="action-bar" title="Welcome">
     </ActionBar>
 

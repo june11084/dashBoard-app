@@ -2,7 +2,7 @@ import axios from 'axios';
 import * as appSettings from 'application-settings';
 import * as camera from "nativescript-camera";
 const state = {
-  apiToken: "Not Obtained",
+  apiToken: "Please Log in",
   allResults: [{id:20, name: "blue" }, {id:10, name: "red"}, {id:32, name: "green"}, {id:5, name: "yellow"}],
 };
 
