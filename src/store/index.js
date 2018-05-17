@@ -11,7 +11,7 @@ import CardView from "nativescript-cardview";
 import DataForm from "nativescript-ui-dataform"
 Vue.registerElement('RadSideDrawer', () => require('nativescript-ui-sidedrawer').RadSideDrawer)
 Vue.registerElement('CardView', () => require('nativescript-cardview').CardView)
-Vue.registerElement('DataForm', () => require('nativescript-ui-dataform').DataForm)
+Vue.registerElement('RadDataForm', () => require('nativescript-ui-dataform').RadDataForm)
 Vue.use(Vuex, VueAxios, axios, camera, RadSideDrawer, CardView, DataForm);
 const debug = process.env.NODE_ENV !== 'production';
 

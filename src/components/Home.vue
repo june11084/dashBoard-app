@@ -4,7 +4,7 @@
       <NavigationButton @tap="onTapHome" android.systemIcon="ic_menu_home" />
       <ActionItem @tap="navigateTo(counter)" text="Details" android.position="popup" icon="res://baseline_account_circle_black_36"/>
       <ActionItem @tap="navigateTo(Counter)" text="Subscriptions" android.position="popup" icon="res://baseline_account_circle_black_36"/>
-      <ActionItem @tap="onTapAccount" text="Log Out" android.position="popup" icon="res://baseline_account_circle_black_36"/>
+      <ActionItem @tap="login()" text="Log Out" android.position="popup" icon="res://baseline_account_circle_black_36"/>
     </ActionBar>
     <RadSideDrawer ref="homeDrawer" >
       <StackLayout ~drawerContent class="sideStackLayout">
@@ -25,7 +25,7 @@
       </StackLayout>
       <StackLayout ~mainContent>
         <StackLayout :visibility="loginVisibility">
-          <Label :text="getStoredToken" alignSelf="center" textAlignment="center" class="h2"/>
+          <Label text="Please Log In" alignSelf="center" textAlignment="center" class="h2"/>
           <Button @tap="login()" text="Login" class="btn btn-outline"/>
         </StackLayout>
         <StackLayout :visibility="mainVisibility">
@@ -96,6 +96,7 @@
           let person = db.getDocument(documentId);
           console.log("documentId is defined")
           this.loggedIn = "visible";
+          this.setToken(person.token);
           return "Token: " + person.token;
         };
       },
@@ -110,7 +111,8 @@
         'increment',
         'callLoginApi',
         'takePicture',
-        'navigateTo'
+        'navigateTo',
+        'setToken'
       ]),
       setVisibility(){
         let documentId = appSettings.getString("documentId","null");
@@ -147,9 +149,6 @@
         });
         appSettings.setString("documentId", documentId);
         let person = db.getDocument(documentId);
-        console.log(db)
-        console.log(documentId)
-        console.log(person.firstname)
       },
       login(){
         console.log("login ran")
@@ -165,13 +164,27 @@
             console.log("Login Ran");
             let userName = `${result.userName}`
             let password = `${result.password}`
+            let loginInfo = {
+              userName: userName,
+              password: password
+            }
             console.log(userName+" "+password)
-            this.callLoginApi(userName, password)
+            this.callLoginApi(loginInfo)
             .then((result)=>{
-              this.createDB(userName, password, this.getToken);
-              console.log(this.getToken)
-              this.loginVisibility = "collapse";
-              this.mainVisibility = "visible";
+              if(typeof this.getToken === 'undefined'){
+                alert({
+                  title: "Error",
+                  message: "Invalid Email or Password, please try again",
+                  okButtonText: "Ok"
+                }).then(() => {
+                  console.log("Alert dialog closed");
+                });
+
+              } else {
+                this.createDB(userName, password, this.getToken);
+                this.loginVisibility = "collapse";
+                this.mainVisibility = "visible";
+              }
             })
           };
         }).catch((err) => {
