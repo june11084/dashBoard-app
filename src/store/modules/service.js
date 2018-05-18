@@ -72,23 +72,7 @@ const actions = {
     }).then((response) => {
       console.log("2. api responded");
       console.log(response);
-      let rawProfileObject = response.data.public_profile;
-      let profileObject = {
-        solo_agent: response.data.public_profile.solo_agent,
-        agent_type: response.data.public_profile.agent_type,
-        company_name: response.data.public_profile.company_name,
-        phone: response.data.public_profile.phone,
-        email: response.data.public_profile.email,
-        url: response.data.public_profile.url,
-        address_street_1: response.data.public_profile.address_street_1,
-        address_street_2: response.data.public_profile.address_street_2,
-        address_city: response.data.public_profile.address_city,
-        address_state_id: response.data.public_profile.address_state_id,
-        address_zip: response.data.public_profile.address_zip,
-        start_date: response.data.public_profile.start_date,
-        short_description: response.data.public_profile.short_description,
-        long_description: response.data.public_profile.long_description,
-      }
+      let profileObject = response.data.public_profile;
       commit('setProfile', profileObject)
       console.log("getProfileApi finished ");
       console.log(state.profileObject);
@@ -115,7 +99,6 @@ const actions = {
       data: state.profileObject
     }).then((response) => {
       console.log("2. api responded");
-      console.log(response);
     }).catch(function (error) {
       if (error.response) {
         console.log(error.response.data);

@@ -224,7 +224,6 @@
     },
     created(){
       this.setVisibility();
-      this.drawerContentText = "SideDrawer for NativeScript can be easily setup in the HTML definition of your page by defining tkDrawerContent and tkMainContent. The component has a default transitions and position and also exposes notifications related to changes in its state. Swipe from left to open side drawer."
     }
   };
 </script>

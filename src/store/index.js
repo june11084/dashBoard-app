@@ -8,7 +8,7 @@ import utill from './modules/utill';
 import camera from "nativescript-camera";
 import RadSideDrawer from "nativescript-ui-sidedrawer";
 import CardView from "nativescript-cardview";
-import DataForm from "nativescript-ui-dataform"
+import DataForm from "nativescript-ui-dataform";
 Vue.registerElement('RadSideDrawer', () => require('nativescript-ui-sidedrawer').RadSideDrawer)
 Vue.registerElement('CardView', () => require('nativescript-cardview').CardView)
 Vue.registerElement('RadDataForm', () => require('nativescript-ui-dataform').RadDataForm)

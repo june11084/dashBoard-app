@@ -19,8 +19,7 @@
       </ListView>
       <ListPicker :items="listOfItems" selectedIndex="0" backgroundColor="#9AB2AC"
           @selectedIndexChange="selectedIndexChanged($event)" v-model="selectedItem">
-
-        </ListPicker>
+      </ListPicker>
     </StackLayout>
 
   </Page>
