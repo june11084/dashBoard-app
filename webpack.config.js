@@ -65,7 +65,12 @@ const config = (platform, launchArgs) => {
           test: /\.scss$/,
           use: scssLoader,
         },
-
+        {
+         test: /\.html$/,
+         loader: 'vue-template-loader',
+         // We don't want to pass `src/index.html` file to this loader.
+         exclude: /index.html/,
+        },
         {
           test: /\.vue$/,
           loader: 'ns-vue-loader',
@@ -93,6 +98,8 @@ const config = (platform, launchArgs) => {
         '.js',
         `.${platform}.vue`,
         '.vue',
+        `.${platform}.html`,
+        '.html',
       ],
     },
 

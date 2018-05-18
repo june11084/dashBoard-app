@@ -4,7 +4,7 @@
       <NavigationButton @tap="onTapHome" android.systemIcon="ic_menu_home" />
       <ActionItem @tap="navigateTo(counter)" text="Details" android.position="popup" icon="res://baseline_account_circle_black_36"/>
       <ActionItem @tap="navigateTo(Counter)" text="Subscriptions" android.position="popup" icon="res://baseline_account_circle_black_36"/>
-      <ActionItem @tap="login()" text="Log Out" android.position="popup" icon="res://baseline_account_circle_black_36"/>
+      <ActionItem @tap="logout()" text="Log Out" android.position="popup" icon="res://baseline_account_circle_black_36"/>
     </ActionBar>
     <RadSideDrawer ref="homeDrawer" >
       <StackLayout ~drawerContent class="sideStackLayout">
@@ -27,6 +27,7 @@
         <StackLayout :visibility="loginVisibility">
           <Label text="Please Log In" alignSelf="center" textAlignment="center" class="h2"/>
           <Button @tap="login()" text="Login" class="btn btn-outline"/>
+          <Button @tap="navigateTo(signUp)" text="Sign Up" class="btn btn-outline"/>
         </StackLayout>
         <StackLayout :visibility="mainVisibility">
           <GridLayout columns="1*, 1*, 1*" rows="120, 120">
@@ -63,7 +64,7 @@
   import Instagram from './Instagram';
   import Contact from './Contact';
   import Notifications from './Notifications';
-
+  import Signup from './Signup';
   export default {
     data () {
       return {
@@ -80,11 +81,12 @@
         instagram: Instagram,
         contact: Contact,
         notifications: Notifications,
+        signUp: Signup
       };
     },
     computed: {
       getStoredToken(){
-        let db = new couchbase.Couchbase("testdb");
+        let db = new couchbase.Couchbase("database");
         let documentId = appSettings.getString("documentId","null");
         console.log(documentId)
         if (documentId==="null"){
@@ -114,6 +116,17 @@
         'navigateTo',
         'setToken'
       ]),
+      signUp(){
+
+      },
+      logout(){
+        let db = new couchbase.Couchbase("database");
+        let documentId = appSettings.getString("documentId","null");
+        db.deleteDocument(documentId);
+        appSettings.clear();
+        this.setVisibility();
+        console.log("logged out")
+      },
       setVisibility(){
         let documentId = appSettings.getString("documentId","null");
         if (documentId==="null"){
@@ -141,7 +154,7 @@
         });
       },
       createDB(firstname, lastname, token){
-        let db = new couchbase.Couchbase("testdb");
+        let db = new couchbase.Couchbase("database");
         let documentId = db.createDocument({
           "firstname": firstname,
           "lastname": lastname,

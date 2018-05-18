@@ -9,10 +9,14 @@ import camera from "nativescript-camera";
 import RadSideDrawer from "nativescript-ui-sidedrawer";
 import CardView from "nativescript-cardview";
 import DataForm from "nativescript-ui-dataform";
+import CheckBox from "nativescript-checkbox";
+import DropDown from "nativescript-drop-down";
 Vue.registerElement('RadSideDrawer', () => require('nativescript-ui-sidedrawer').RadSideDrawer)
 Vue.registerElement('CardView', () => require('nativescript-cardview').CardView)
 Vue.registerElement('RadDataForm', () => require('nativescript-ui-dataform').RadDataForm)
-Vue.use(Vuex, VueAxios, axios, camera, RadSideDrawer, CardView, DataForm);
+Vue.registerElement('CheckBox', () => require('nativescript-checkbox').CheckBox)
+Vue.registerElement('DropDown', () => require('nativescript-drop-down').DropDown)
+Vue.use(Vuex, VueAxios, axios, camera, RadSideDrawer, CardView, DataForm, CheckBox);
 const debug = process.env.NODE_ENV !== 'production';
 
 const store = new Vuex.Store({

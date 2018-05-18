@@ -1,4 +1,14 @@
 <template>
+  <!-- <div>
+  <select>
+  <option value="volvo">Volvo</option>
+  <option value="saab">Saab</option>
+  <option value="vw">VW</option>
+  <option value="audi" selected>Audi</option>
+</select>
+
+
+  </div> -->
   <Page class="page">
     <ActionBar class="action-bar" title="Profile">
         <NavigationButton @tap="$navigateBack" android.systemIcon="ic_menu_back" />
@@ -8,18 +18,21 @@
       </RadDataForm>
       <Button text="Save" row="1" col="0" colSpan="1"  @tap="update()" />
     </GridLayout> -->
+    <!-- <ListPicker :items="soloAgent" selectedIndex="0" height="100"
+    @selectedIndexChange="selectedIndexChanged($event)" v-model="profileObject.solo_agent">
+  </ListPicker>
+  <ListPicker :items="agentType" selectedIndex="0" height="100"
+  @selectedIndexChange="selectedIndexChanged($event)" v-model="profileObject.agent_type">
+</ListPicker> -->
+<!-- <div v-html="html"></div> -->
+
     <StackLayout>
       <Label text="Agent Type"></Label>
-      <!-- <ListPicker :items="soloAgent" selectedIndex="0" height="100"
-          @selectedIndexChange="selectedIndexChanged($event)" v-model="profileObject.solo_agent">
-      </ListPicker>
-      <ListPicker :items="agentType" selectedIndex="0" height="100"
-          @selectedIndexChange="selectedIndexChanged($event)" v-model="profileObject.agent_type">
-      </ListPicker> -->
-      <WebView src="~/src/components/profile.html" />
-      <!-- <HtmlView html="<select><option value="volvo">Volvo</option><option value="saab">Saab</option><option>value="vw">VW</option><option value="audi" selected>Audi</option></select>"> -->
-
-      </HtmlView>
+      <CheckBox #CB1 text="Team" checked="false"></CheckBox>
+      <DropDown class="Dropdown" :items="agentType" selectedIndex="0"
+        opened="dropDownOpened" closed="dropDownClosed"
+        @selectedIndexChanged="dropDownSelectedIndexChanged($event)"
+      ></Dropdown>
       <TextField v-model="profileObject.solo_agent" />
       <TextField v-model="profileObject.agent_type" />
     </StackLayout>
@@ -31,12 +44,14 @@
   import { mapGetters } from 'vuex';
   import axios from 'axios';
   import VueAxios from 'vue-axios';
+  import Html from './profile';
   export default {
     data () {
       return {
+        selectedIndex: "",
         soloAgent: [{Team: '0'}, {Individual: '1'}],
         agentType: ["Real Estate Agent", "Broker", "Realtor"],
-        profileObject: {}
+        profileObject: {},
       }
     },
     computed: {
@@ -46,6 +61,10 @@
         listOfItems: 'allResults',
         getProfileObject: 'getProfileObject'
       }),
+      dropDownSelectedIndexChanged(args){
+        let picker = args.object;
+        console.log(picker.items[picker.selectedIndex])
+      },
       update(){
         this.updateProfile().then(() => {
         }).then(() => {
@@ -97,3 +116,27 @@
     }
 }
 </script>
+
+<style scoped>
+  .hello-world {
+    margin: 20;
+  }
+  .btn btn-info btn-lg {
+    background-color: #3993CC;
+  }
+  .Dropdown {
+    font-size:24px;
+  }
+
+  Button {
+
+    borderColor: #BABABA;
+  }
+
+  TextField {
+    font-size: 35px;
+  }
+  Label {
+    font-size: 24;
+  }
+</style>
