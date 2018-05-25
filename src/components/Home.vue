@@ -65,6 +65,7 @@
   import Contact from './Contact';
   import Notifications from './Notifications';
   import Signup from './Signup';
+  import Agreement from './Agreement';
   export default {
     data () {
       return {
@@ -81,7 +82,8 @@
         instagram: Instagram,
         contact: Contact,
         notifications: Notifications,
-        signUp: Signup
+        signUp: Signup,
+        agreement: Agreement
       };
     },
     computed: {

@@ -89,14 +89,14 @@ const actions = {
         console.log(error.config);
     });
   },
-  updateProfile({commit}){
+  updateProfile({commit}, profileObject){
     return axios({
       method: "patch",
       url: `http://api.mytrailhead.net/v1/dashboard/public/profile`,
       headers: {
         userauth: state.apiToken
       },
-      data: state.profileObject
+      data: profileObject
     }).then((response) => {
       console.log("2. api responded");
     }).catch(function (error) {

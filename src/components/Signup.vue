@@ -6,13 +6,25 @@
       <ActionItem @tap="navigateTo(Counter)" text="Subscriptions" android.position="popup" icon="res://baseline_account_circle_black_36"/>
       <ActionItem @tap="logout()" text="Log Out" android.position="popup" icon="res://baseline_account_circle_black_36"/>
     </ActionBar>
-
-    <SegmentedBar selectedIndex="0"
-      @selectedIndexChange="onSelectedIndexChange($event)" selectedBackgroundColor="black">
-      <SegmentedBarItem title="First" />
-      <SegmentedBarItem title="Second" />
-      <SegmentedBarItem title="Third" />
-    </SegmentedBar>
+    <StackLayout>
+      <SegmentedBar class="tabView" :selectedIndex="selectedIndex" @selectedIndexChanged="onSelectedIndexChanged($event)" width="60%" selectedBackgroundColor="#000000"  >
+        <SegmentedBarItem  class="font-awesome-circle" :title="'\uf111'"/>
+        <SegmentedBarItem  class="font-awesome-circle" :title="'\uf111'"/>
+        <SegmentedBarItem  class="font-awesome-circle" :title="'\uf111'"/>
+      </SegmentedBar>
+      <StackLayout class="tabs" :visibility="tab1Visibility">
+        <Label text="Content for Tab 1"/>
+        <Button @tap="nextPage()" text="Next" class="btn btn-outline"/>
+      </StackLayout>
+      <StackLayout class="tabs" :visibility="tab2Visibility">
+        <Label text="Content for Tab 2"/>
+        <Button @tap="nextPage()" text="Next" class="btn btn-outline"/>
+      </StackLayout>
+      <StackLayout class="tabs" :visibility="tab3Visibility">
+        <Label text="Content for Tab 3"/>
+        <Button @tap="$navigateBack" text="Finish" class="btn btn-outline"/>
+      </StackLayout>
+    </StackLayout>
   </Page>
 </template>
 
@@ -39,6 +51,10 @@
     data () {
       return {
         listOfItems: ["First", "Second", "Third"],
+        tab1Visibility: "visible",
+        tab2Visibility: "collapse",
+        tab3Visibility: "collapse",
+        selectedIndex: 0
       };
     },
     computed: {
@@ -49,19 +65,29 @@
     methods: {
       ...mapActions([
       ]),
-      onSelectedIndexChange(args){
-        let picker = args.object;
-        console.log(picker.selectedIndex);
+      nextPage(){
+        this.selectedIndex++;
       },
-      setVisibility(){
-        let documentId = appSettings.getString("documentId","null");
-        if (documentId==="null"){
-          this.loginVisibility = "visible";
-          this.mainVisibility = "collapse";
-        } else {
-          this.mainVisibility = "visible";
-          this.loginVisibility = "collapse";
-        };
+      onSelectedIndexChanged(args){
+        let picker = args.object;
+        console.log(picker.selectedIndex)
+        this.selectedIndex = picker.selectedIndex;
+        this.setVisibility(this.selectedIndex);
+      },
+      setVisibility(selectedIndex){
+        if(selectedIndex===0){
+          this.tab1Visibility = "visible";
+          this.tab2Visibility = "collapse";
+          this.tab3Visibility = "collapse";
+        } else if(selectedIndex===1){
+          this.tab2Visibility = "visible";
+          this.tab1Visibility = "collapse";
+          this.tab3Visibility = "collapse";
+        } else if(selectedIndex===2){
+          this.tab2Visibility = "collapse";
+          this.tab1Visibility = "collapse";
+          this.tab3Visibility = "visible";
+        } else {}
       },
       navigateTo(page) {
         console.log("navigateTo ran")
@@ -86,8 +112,25 @@
   }
   .SegmentedBarItem {
   }
-  Button {
+  .font-awesome-circle {
+    border-color: #FFFFFF;
+    font-family: 'fa-solid-900';
+    font-size: 15;
+  }
+  .tabView {
+    border-color: #FFFFFF;
+    background-color: transparent;
+  }
 
+  @keyframes example {
+    from {background-color: red;}
+    to {background-color: yellow;}
+  }
+  .tabs {
+    animation-name: example;
+    animation-duration: 4s;
+  }
+  Button {
     borderColor: #BABABA;
   }
 

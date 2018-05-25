@@ -8,7 +8,7 @@ import Home from './components/Home';
 
 import store from './store';
 
-
+import Profile from './components/Profile';
 
 import './styles.scss';
 
