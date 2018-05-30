@@ -7,13 +7,9 @@
       <StackLayout>
         <Label text="Agent Type:"></Label>
         <!-- <CheckBox text="Team" checked="false"></CheckBox> -->
-        <DropDown class="agentDropdown" :items="soloAgent" selectedIndex="0"
+        <DropDown class="agentDropdown" :items="soloAgent" :selectedIndex="selectedIndex"
           opened="dropDownOpened" closed="dropDownClosed"
           @selectedIndexChanged="soloAgentDropDownSelectedIndexChanged($event)">
-        </Dropdown>
-        <DropDown class="Dropdown" :items="agentType" selectedIndex="0"
-          opened="dropDownOpened" closed="dropDownClosed"
-          @selectedIndexChanged="agentTypeDropDownSelectedIndexChanged($event)">
         </Dropdown>
         <Label text="Company Name:"></Label>
         <TextField v-model="profileObject.company_name" />
@@ -30,7 +26,7 @@
         <Label text="City:"></Label>
         <TextField v-model="profileObject.address_city" />
         <Label text="State:"></Label>
-        <DropDown class="Dropdown" :items="agentType" selectedIndex="0"
+        <DropDown class="Dropdown" :items="states" :selectedIndex="selectedStateIndex"
           opened="dropDownOpened" closed="dropDownClosed"
           @selectedIndexChanged="statesDropDownSelectedIndexChanged($event)">
         </Dropdown>
@@ -50,6 +46,7 @@
 <script>
   import { mapActions } from 'vuex';
   import { mapGetters } from 'vuex';
+  import { ValueList } from "nativescript-drop-down";
   import axios from 'axios';
   import VueAxios from 'vue-axios';
   import Html from './profile';
@@ -58,9 +55,10 @@
     data () {
       return {
         selectedIndex: "",
-        soloAgent: ["Team","Individual"],
+        selectedStateIndex: null,
+        soloAgent: ["Individual","Team"],
         agentType: ["Real Estate Agent", "Broker", "Realtor"],
-        states: [],
+        states: null,
         profileObject: {
           start_date: ""
         },
@@ -96,10 +94,52 @@
         datePicker.minDate = new Date(1975, 0, 29);
         datePicker.maxDate = new Date(2045, 4, 12);
       },
+      getStates(){
+        console.log("getStates started")
+        return axios({
+          method: "get",
+          url: `http://api.mytrailhead.net/v1/utils/states`,
+          headers: {
+          },
+        }).then((response) => {
+          let stateObjectArray = [];
+          for(let i = 0; i < response.data.states.length; i++){
+            let stateObject = {value:response.data.states[i].id.toString() , display:response.data.states[i].name.toString()};
+            stateObjectArray.push(stateObject);
+          }
+          console.log(stateObjectArray)
+          this.states= new ValueList(stateObjectArray);
+          console.log("getStates ended")
+        }).catch(function (error) {
+          if (error.response) {
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+            } else if (error.request) {
+              console.log(error.request);
+            } else {
+              console.log('Error', error.message);
+            }
+            console.log(error.config);
+        });
+      },
+      setIndex(){
+        console.log("setIndex started")
+        let stateID = this.profileObject.address_state_id+1;
+        let originalState = this.states.getIndex(stateID.toString());
+        console.log(originalState)
+        this.selectedStateIndex = originalState;
+        if(this.profileObject.team_size === 1){
+          this.selectedIndex = 1;
+        } else {
+          this.selectedIndex = 0;
+        }
+        console.log('setIndex ended')
+      },
       soloAgentDropDownSelectedIndexChanged(args){
         let picker = args.object;
         console.log(picker.selectedIndex);
-        this.profileObject.solo_agent = picker.selectedIndex;
+        this.profileObject.team_size = picker.selectedIndex;
       },
       agentTypeDropDownSelectedIndexChanged(args){
         let picker = args.object;
@@ -108,11 +148,11 @@
       },
       statesDropDownSelectedIndexChanged(args){
         let picker = args.object;
-        console.log(picker.items[picker.selectedIndex]);
-        this.profileObject.address_state_id = picker.items[picker.selectedIndex];
+        //console.log(picker.items[picker.selectedStateIndex]);
+        this.profileObject.address_state_id = picker.selectedIndex;
+        console.log(this.profileObject.address_state_id)
       },
       update(){
-        // this.profileObject.solo_agent=
         alert('Profile Updated')
         .then(() => {
           console.log("Alert dialog closed.");
@@ -120,14 +160,13 @@
         this.$navigateBack();
         this.updateProfile(this.profileObject).then(() => {
         }).then(() => {
-        return this.getProfileApi().then(() => {
-        })
-        })
+          return this.getProfileApi().then(() => {
+          })
+        });
       },
       trimProfileObject(){
         let profileObject = {
-          solo_agent: this.getProfileObject().solo_agent,
-          agent_type: this.getProfileObject().agent_type,
+          team_size: this.getProfileObject().team_size,
           company_name: this.getProfileObject().company_name,
           phone: this.getProfileObject().phone,
           email: this.getProfileObject().email,
@@ -159,9 +198,10 @@
       this.loadingIndicator.show(this.options);
       return this.getProfileApi().then(() => {
         this.profileObject=this.trimProfileObject();
-        this.loadingIndicator.hide();
-        console.log(this.profileObject);
-        console.log(this.getProfileObject().solo_agent);
+        return this.getStates().then(() => {
+          this.setIndex();
+          this.loadingIndicator.hide();
+        });
       })
 
     }

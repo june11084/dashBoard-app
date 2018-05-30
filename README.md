@@ -90,3 +90,8 @@ export default {
 },
 ```
 * To see how to import and use plug-ins, refer to scr/store/index.js and .vue files
+
+### Styling
+* components can be styled inside .vue files at the bottom directly.
+* Android specific app styling such as app logo and splash screen are defined in
+template/app/App_Resources/Android/AndroidManifest.xml
