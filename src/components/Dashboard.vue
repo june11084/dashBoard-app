@@ -1,18 +1,18 @@
 <template>
-  <Page class="page" backgroundImage="res://real">
-    <ActionBar class="action-bar" title="Home">
+  <Page class="page">
+    <ActionBar class="action-bar" title="Dashboard" backgroundColor="#e13131">
       <NavigationButton @tap="$navigateBack" android.systemIcon="ic_menu_back" />
     </ActionBar>
-      <StackLayout verticalAlignment="middle">
-        <GridLayout columns="1*, 1*, 1*" rows="120, 120">
-          <Button @tap="navigateTo(listings)" class="btn btn-info btn-lg" text="Listings" row="0" col="0" margin="15"/>
-          <Button @tap="navigateTo(profile)" class="btn btn-info btn-lg" text="Profile" row="0" col="1" margin="15"/>
-          <Button @tap="navigateTo(portfolio)" class="btn btn-info btn-lg" text="Portfolio Site"row="0" col="2" margin="15"/>
-          <Button @tap="navigateTo(google)" class="btn btn-info btn-lg" text="Google" row="1" col="0" margin="15"/>
-          <Button @tap="navigateTo(facebook)" class="btn btn-info btn-lg" text="Facebook" row="1" col="1" margin="15"/>
-          <Button @tap="navigateTo(instagram)" class="btn btn-info btn-lg" text="Instagram" row="1" col="2" margin="15"/>
-        </GridLayout>
-      </StackLayout>
+    <Gradient direction="to bottom" colors="#4e4e4e, #121212">
+      <GridLayout columns="1*, 1*, 1*" rows="120, 120" class="gridLayout">
+        <Button @tap="navigateTo(listings)" class="btn btn-info btn-lg" text="Listings" row="0" col="0" margin="15"/>
+        <Button @tap="navigateTo(profile)" class="btn btn-info btn-lg" text="Profile" row="0" col="1" margin="15"/>
+        <Button @tap="navigateTo(portfolio)" class="btn btn-info btn-lg" text="Portfolio Site"row="0" col="2" margin="15"/>
+        <Button @tap="navigateTo(google)" class="btn btn-info btn-lg" text="Google" row="1" col="0" margin="15"/>
+        <Button @tap="navigateTo(facebook)" class="btn btn-info btn-lg" text="Facebook" row="1" col="1" margin="15"/>
+        <Button @tap="navigateTo(instagram)" class="btn btn-info btn-lg" text="Instagram" row="1" col="2" margin="15"/>
+      </GridLayout>
+    </Gradient>
   </Page>
 </template>
 
@@ -118,7 +118,9 @@
 
     borderColor: #BABABA;
   }
-
+  .gridLayout {
+    margin-top: 30%;
+  }
   Label {
     font-size: 24;
   }

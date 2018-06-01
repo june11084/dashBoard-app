@@ -1,14 +1,14 @@
 <template>
   <Page class="page" backgroundImage="res://real">
-    <ActionBar class="action-bar" title="Home" backgroundColor="#e13131">
+    <ActionBar class="action-bar" title="" backgroundColor="#e13131">
       <NavigationButton @tap="onTapHome" :visibility="hamburgerVisibility" icon="res://baseline_list_black_36" />
-      <ActionItem @tap="logout()" text="Log Out" icon="res://logo54"/>
+      <ActionItem class="actionItem" @tap="logout()" text="Log Out" icon="res://new_logo_idea"/>
     </ActionBar>
-
+    <Gradient direction="to bottom" colors="#4e4e4e, #121212">
     <RadSideDrawer ref="homeDrawer" :gesturesEnabled="gesturesEnabled">
       <StackLayout ~drawerContent class="sideStackLayout" >
-        <StackLayout class="sideTitleStackLayout" backgroundImage="res://real">
-          <Image src="res://new_logo_idea" stretch="fill" horizontalAlignment="left" width="35%" height="15%" marginLeft="15"/>
+        <StackLayout class="sideTitleStackLayout">
+          <Image src="res://new_logo_idea" stretch="fill" horizontalAlignment="left" width="35%" height="25%" marginLeft="15"/>
           <StackLayout class="sidedrawerAccount" backgroundColor="#e13131">
             <Label class="sideLabel" text="Doug Jones"></Label>
             <Label class="sideLabel" text="Djones@gamil.com"></Label>
@@ -22,20 +22,18 @@
         <Label text="Close" color="lightgray" padding="10" style="horizontal-align: left" @tap="onCloseHomeDrawerTap"></Label>
       </StackLayout>
       <StackLayout ~mainContent verticalAlignment="middle">
-        <Gradient direction="to bottom" colors="#4e4e4e, red, #2e2e2e">
-          <Image src="res://new_logo_idea" stretch="none" horizontalAlignment="center" />
-          <StackLayout :visibility="loginVisibility">
-            <Label text="Trailhead Marketing" alignSelf="center" textAlignment="center" class="h2"/>
-            <Button @tap="login()" text="Login" class="btn btn-outline"/>
-            <Button @tap="navigateTo(signUp)" text="Sign Up" class="btn btn-outline"/>
-          </StackLayout>
-          <Label :text="getStoredToken" alignSelf="center" textAlignment="center" class="h2"/>
-        </Gradient>
+        <Image src="res://new_logo_idea" stretch="none" horizontalAlignment="center" />
+        <Label text="Trailhead Marketing" alignSelf="center" textAlignment="center" class="h2"/>
+        <StackLayout :visibility="loginVisibility">
+          <Button @tap="login()" text="Login" class="btn btn-outline"/>
+          <Button @tap="navigateTo(signUp)" text="Sign Up" class="btn btn-outline"/>
+        </StackLayout>
+        <Label :text="getStoredToken" alignSelf="center" textAlignment="center" class="h2" visibility="hidden"/>
       </StackLayout>
     </RadSideDrawer>
+    </Gradient>
   </Page>
 </template>
-
 
 <script>
   import { mapActions } from 'vuex';
@@ -268,6 +266,9 @@
     font-size:18px;
     margin-left: 15px;
     color: #ffffff;
+  }
+  .actionItem {
+    size: 36px;
   }
   Label {
     font-size: 24;

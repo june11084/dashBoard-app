@@ -1,7 +1,7 @@
 <template>
   <Page class="page">
-    <ActionBar class="action-bar" title="Home">
-      <NavigationButton @tap="onTapHome" android.systemIcon="ic_menu_home" />
+    <ActionBar class="action-bar" title="Agreement" backgroundColor="#e13131">
+      <NavigationButton @tap="$navigateBack" android.systemIcon="ic_menu_back" />
       <ActionItem @tap="" text="Log Out" icon="res://logo54"/>
     </ActionBar>
     <ScrollView orientation="vertical">
