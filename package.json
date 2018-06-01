@@ -25,6 +25,7 @@
     "nativescript-couchbase": "^1.0.18",
     "nativescript-drop-down": "^3.2.5",
     "nativescript-fontawesome": "^1.0.0",
+    "nativescript-gradient": "^2.0.1",
     "nativescript-loading-indicator": "^2.4.0",
     "nativescript-materialdropdownlist": "^1.0.15",
     "nativescript-permissions": "^1.2.3",

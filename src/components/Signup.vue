@@ -1,6 +1,6 @@
 <template>
   <Page class="page">
-    <ActionBar class="action-bar" title="Home">
+    <ActionBar class="action-bar" title="Home" backgroundColor="#e13131">
       <NavigationButton @tap="onTapHome" android.systemIcon="ic_menu_home" />
       <ActionItem @tap="navigateTo(counter)" text="Details" android.position="popup" icon="res://baseline_account_circle_black_36"/>
       <ActionItem @tap="navigateTo(Counter)" text="Subscriptions" android.position="popup" icon="res://baseline_account_circle_black_36"/>
@@ -13,21 +13,20 @@
         <SegmentedBarItem  class="font-awesome-circle" :title="'\uf111'"/>
       </SegmentedBar>
       <StackLayout class="tabs" :visibility="tab1Visibility">
-        <Label text="Content for Tab 1"/>
+        <Label text="User Name:"/>
         <Button @tap="nextPage()" text="Next" class="btn btn-outline"/>
       </StackLayout>
       <StackLayout class="tabs" :visibility="tab2Visibility">
-        <Label text="Content for Tab 2"/>
+        <Label text="Email"/>
         <Button @tap="nextPage()" text="Next" class="btn btn-outline"/>
       </StackLayout>
       <StackLayout class="tabs" :visibility="tab3Visibility">
-        <Label text="Content for Tab 3"/>
+        <Label text="Policy"/>
         <Button @tap="$navigateBack" text="Finish" class="btn btn-outline"/>
       </StackLayout>
     </StackLayout>
   </Page>
 </template>
-
 <script>
   import { mapActions } from 'vuex';
   import { mapGetters } from 'vuex';
@@ -120,15 +119,6 @@
   .tabView {
     border-color: #FFFFFF;
     background-color: transparent;
-  }
-
-  @keyframes example {
-    from {background-color: red;}
-    to {background-color: yellow;}
-  }
-  .tabs {
-    animation-name: example;
-    animation-duration: 4s;
   }
   Button {
     borderColor: #BABABA;

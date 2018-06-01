@@ -18,6 +18,7 @@ Vue.registerElement('CardView', () => require('nativescript-cardview').CardView)
 Vue.registerElement('RadDataForm', () => require('nativescript-ui-dataform').RadDataForm)
 Vue.registerElement('CheckBox', () => require('nativescript-checkbox').CheckBox)
 Vue.registerElement('DropDown', () => require('nativescript-drop-down').DropDown)
+Vue.registerElement("Gradient", () => require("nativescript-gradient").Gradient)
 Vue.use(Vuex, VueAxios, axios, camera, RadSideDrawer, CardView, DataForm, CheckBox, LoadingIndicator);
 Fontawesome.init();
 const debug = process.env.NODE_ENV !== 'production';

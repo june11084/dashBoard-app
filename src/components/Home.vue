@@ -1,50 +1,41 @@
 <template>
-  <Page class="page">
-    <ActionBar class="action-bar" title="Home">
-      <NavigationButton @tap="onTapHome" android.systemIcon="ic_menu_home" />
-      <ActionItem @tap="navigateTo(counter)" text="Details" android.position="popup" icon="res://baseline_account_circle_black_36"/>
-      <ActionItem @tap="navigateTo(Counter)" text="Subscriptions" android.position="popup" icon="res://baseline_account_circle_black_36"/>
-      <ActionItem @tap="logout()" text="Log Out" android.position="popup" icon="res://baseline_account_circle_black_36"/>
+  <Page class="page" backgroundImage="res://real">
+    <ActionBar class="action-bar" title="Home" backgroundColor="#e13131">
+      <NavigationButton @tap="onTapHome" :visibility="hamburgerVisibility" icon="res://baseline_list_black_36" />
+      <ActionItem @tap="logout()" text="Log Out" icon="res://logo54"/>
     </ActionBar>
-    <RadSideDrawer ref="homeDrawer" >
-      <StackLayout ~drawerContent class="sideStackLayout">
-        <StackLayout class="sideTitleStackLayout">
-            <Label text="Home"></Label>
+
+    <RadSideDrawer ref="homeDrawer" :gesturesEnabled="gesturesEnabled">
+      <StackLayout ~drawerContent class="sideStackLayout" >
+        <StackLayout class="sideTitleStackLayout" backgroundImage="res://real">
+          <Image src="res://new_logo_idea" stretch="fill" horizontalAlignment="left" width="35%" height="15%" marginLeft="15"/>
+          <StackLayout class="sidedrawerAccount" backgroundColor="#e13131">
+            <Label class="sideLabel" text="Doug Jones"></Label>
+            <Label class="sideLabel" text="Djones@gamil.com"></Label>
+          </StackLayout>
         </StackLayout>
         <StackLayout class="sideStackLayout">
             <Button @tap="navigateTo(profile)" text="Profile" class="sideButton sideLightGrayButton"/>
-            <Button @tap="navigateTo(portfolio)" text="Portfolio Site" class="sideButton"/>
-            <Button @tap="navigateTo(listings)" text="Listings" class="sideButton"/>
-            <Button @tap="navigateTo(google)" text="Google" class="sideButton sideLightGrayButton"/>
-            <Button @tap="navigateTo(facebook)" text="Facebook" class="sideButton"/>
-            <Button @tap="navigateTo(instagram)" text="Instagram" class="sideButton"/>
-            <Button @tap="navigateTo(contact)" text="Contact Us" class="sideButton"/>
-            <Button @tap="navigateTo(notifications)" text="Notifications" class="sideButton"/>
+            <Button @tap="navigateTo(dashboard)" text="Dashboard" class="sideButton"/>
+            <Button @tap="navigateTo(agreement)" text="Agreement" class="sideButton"/>
         </StackLayout>
         <Label text="Close" color="lightgray" padding="10" style="horizontal-align: left" @tap="onCloseHomeDrawerTap"></Label>
       </StackLayout>
-      <StackLayout ~mainContent>
-        <StackLayout :visibility="loginVisibility">
-          <Label text="Please Log In" alignSelf="center" textAlignment="center" class="h2"/>
-          <Button @tap="login()" text="Login" class="btn btn-outline"/>
-          <Button @tap="navigateTo(signUp)" text="Sign Up" class="btn btn-outline"/>
-        </StackLayout>
-        <StackLayout :visibility="mainVisibility">
-          <GridLayout columns="1*, 1*, 1*" rows="120, 120">
-            <Button @tap="navigateTo(listings)" class="btn btn-info btn-lg" text="Listings" row="0" col="0" margin="15"/>
-            <Button @tap="navigateTo(profile)" class="btn btn-info btn-lg" text="Profile" row="0" col="1" margin="15"/>
-            <Button @tap="navigateTo(portfolio)" class="btn btn-info btn-lg" text="Portfolio Site"row="0" col="2" margin="15"/>
-            <Button @tap="navigateTo(google)" class="btn btn-info btn-lg" text="Google" row="1" col="0" margin="15"/>
-            <Button @tap="navigateTo(facebook)" class="btn btn-info btn-lg" text="Facebook" row="1" col="1" margin="15"/>
-            <Button @tap="navigateTo(instagram)" class="btn btn-info btn-lg" text="Instagram" row="1" col="2" margin="15"/>
-          </GridLayout>
+      <StackLayout ~mainContent verticalAlignment="middle">
+        <Gradient direction="to bottom" colors="#4e4e4e, red, #2e2e2e">
+          <Image src="res://new_logo_idea" stretch="none" horizontalAlignment="center" />
+          <StackLayout :visibility="loginVisibility">
+            <Label text="Trailhead Marketing" alignSelf="center" textAlignment="center" class="h2"/>
+            <Button @tap="login()" text="Login" class="btn btn-outline"/>
+            <Button @tap="navigateTo(signUp)" text="Sign Up" class="btn btn-outline"/>
+          </StackLayout>
           <Label :text="getStoredToken" alignSelf="center" textAlignment="center" class="h2"/>
-        </StackLayout>
-        <ActivityIndicator busy="false" @busyChange="onBusyChanged" />
+        </Gradient>
       </StackLayout>
     </RadSideDrawer>
   </Page>
 </template>
+
 
 <script>
   import { mapActions } from 'vuex';
@@ -66,6 +57,7 @@
   import Notifications from './Notifications';
   import Signup from './Signup';
   import Agreement from './Agreement';
+  import Dashboard from './Dashboard';
   export default {
     data () {
       return {
@@ -73,6 +65,8 @@
         drawerContentText: "",
         loginVisibility: "",
         mainVisibility: "",
+        hamburgerVisibility: "",
+        gesturesEnabled: true,
         counter: Counter,
         profile: Profile,
         facebook: Facebook,
@@ -83,11 +77,13 @@
         contact: Contact,
         notifications: Notifications,
         signUp: Signup,
-        agreement: Agreement
+        agreement: Agreement,
+        dashboard: Dashboard
       };
     },
     computed: {
       getStoredToken(){
+        console.log("getToken ran")
         let db = new couchbase.Couchbase("database");
         let documentId = appSettings.getString("documentId","null");
         console.log(documentId)
@@ -111,8 +107,6 @@
     },
     methods: {
       ...mapActions([
-        'decrement',
-        'increment',
         'callLoginApi',
         'takePicture',
         'navigateTo',
@@ -132,12 +126,19 @@
       setVisibility(){
         let documentId = appSettings.getString("documentId","null");
         if (documentId==="null"){
+          console.log("document id is null")
+          this.gesturesEnabled=false;
+          this.hamburgerVisibility="hidden";
           this.loginVisibility = "visible";
           this.mainVisibility = "collapse";
         } else {
+          console.log("document id is valid")
+          this.gesturesEnabled=true;
+          this.hamburgerVisibility="visible";
           this.mainVisibility = "visible";
           this.loginVisibility = "collapse";
         };
+        console.log("Set Visibility ran")
       },
       navigateTo(page) {
         console.log("navigateTo ran")
@@ -194,9 +195,10 @@
                 }).then(() => {
                   console.log("Alert dialog closed");
                 });
-
               } else {
                 this.createDB(userName, password, this.getToken);
+                this.gesturesEnabled=true;
+                this.hamburgerVisibility="visible";
                 this.loginVisibility = "collapse";
                 this.mainVisibility = "visible";
               }
@@ -222,7 +224,13 @@
         this.$refs.homeDrawer.nativeView.closeDrawer();
       },
       onTapHome(){
-        this.$refs.homeDrawer.nativeView.toggleDrawerState();
+        let documentId = appSettings.getString("documentId","null");
+        if(documentId==="null"){
+          this.gesturesEnabled=false;
+        }else {
+          this.gesturesEnabled=true;
+          this.$refs.homeDrawer.nativeView.toggleDrawerState();
+        }
       },
       openAccountDrawer() {
         this.$refs.accountDrawer.nativeView.showDrawer();
@@ -250,13 +258,19 @@
   .btn btn-info btn-lg {
     background-color: #3993CC;
   }
-
+  .btn {
+    background-color: rgb(208, 225, 225, 0.7);
+  }
   Button {
-
     borderColor: #BABABA;
   }
-
+  .sideLabel {
+    font-size:18px;
+    margin-left: 15px;
+    color: #ffffff;
+  }
   Label {
     font-size: 24;
+    color:#42cef4;
   }
 </style>

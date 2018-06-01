@@ -20,7 +20,8 @@
     "nativescript-ui-dataform": "^3.6.0",
     "nativescript-checkbox": "^3.0.3",
     "nativescript-fontawesome": "^1.0.0",
-    "nativescript-loading-indicator": "^2.4.0"
+    "nativescript-loading-indicator": "^2.4.0",
+    "nativescript-gradient": "^2.0.1"
   },
   "devDependencies": {
     "babel-traverse": "6.26.0",

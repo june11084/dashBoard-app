@@ -1,6 +1,6 @@
 <template>
   <Page class="page">
-    <ActionBar class="action-bar" title="Profile">
+    <ActionBar class="action-bar" title="Profile" backgroundColor="#e13131">
         <NavigationButton @tap="$navigateBack" android.systemIcon="ic_menu_back" />
     </ActionBar>
     <ScrollView>
