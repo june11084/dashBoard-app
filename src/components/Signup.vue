@@ -1,7 +1,7 @@
 <template>
   <Page class="page">
     <ActionBar class="action-bar" title="Home" backgroundColor="#e13131">
-      <NavigationButton @tap="onTapHome" android.systemIcon="ic_menu_home" />
+      <NavigationButton @tap="$navigateBack" android.systemIcon="ic_menu_back" />
       <ActionItem @tap="navigateTo(counter)" text="Details" android.position="popup" icon="res://baseline_account_circle_black_36"/>
       <ActionItem @tap="navigateTo(Counter)" text="Subscriptions" android.position="popup" icon="res://baseline_account_circle_black_36"/>
       <ActionItem @tap="logout()" text="Log Out" android.position="popup" icon="res://baseline_account_circle_black_36"/>
