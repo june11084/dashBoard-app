@@ -1,3 +1,4 @@
+### This is a mobile app example I made during my internship at Trailhead Marketing, using vuex with nativescript as an alternative to React native. With limited resources, I've made this readme with what I've learned to reference back later.
 # NativeScript quick guide
 
 ## Getting Started
